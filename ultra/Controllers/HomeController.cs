@@ -14,5 +14,11 @@ namespace ultra.Controllers
 
             return View();
         }
+        public ActionResult Control()
+        {
+            ViewBag.Title = "Control Page";
+
+            return View();
+        }
     }
 }

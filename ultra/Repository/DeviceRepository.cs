@@ -5,14 +5,14 @@ using System.Linq;
 using System.Web;
 using MySql.Data.MySqlClient;
 
-namespace Ultrasonic.Repository
+namespace device.Repository
 {
-    public class ValueRepository
+    public class DeviceRepository
     {
         public static DataSet ReadData(string SQL)
         {
             DataSet ds = new DataSet();
-            string connect = "Server=localhost;Database=ultrasonic;Uid=root;Pwd=;";
+            string connect = "Server=localhost;Database=lightdb;Uid=root;Pwd=;";
             MySqlConnection conn = new MySqlConnection(connect);
             //conn.ConnectionString = connect;
 

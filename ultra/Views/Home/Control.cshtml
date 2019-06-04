@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "Control";
+}
+
+<h2>Control</h2>
+<div>
+    <h3>Bedroom</h3>
+    <form action="api/control/device/1/1" method="post">
+        <input type="submit" value="ON" />
+    </form>
+   
+    <form action="api/control/device/1/0" method="post">
+        <input type="submit" value="OFF" />
+    </form>
+</div>
+
+<div>
+    <h3>Bathroom</h3>
+    <form action="api/control/device/2/1" method="post">
+        <input type="submit" value="ON" />
+    </form>
+   
+    <form action="api/control/device/2/0" method="post">
+        <input type="submit" value="OFF" />
+    </form>
+</div>

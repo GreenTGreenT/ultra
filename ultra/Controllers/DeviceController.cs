@@ -5,28 +5,28 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Ultrasonic.Models;
-using Ultrasonic.Repository;
+using device.Models;
+using device.Repository;
 using MySql.Data.MySqlClient;
 
-namespace Ultrasonic.Controllers
+namespace device.Controllers
 {
-    public class userController : ApiController
+    public class DeviceController : ApiController
     {
         /// <summary>  
         /// Insert user to database  
         /// </summary> 
         [HttpPost]
-        [Route("api/save/value")]
-        public HttpResponseMessage Postvalue(Value value)
+        [Route("api/post/device")]
+        public HttpResponseMessage Postdevice(Device device)
         {
             //bool result = false;
             string text = "";
             string errMessage = "";
             try
             {
-                var query = string.Format("INSERT INTO value(id, distance) VALUES ('{0}', '{1}')", value.id, value.distance); //SQL query language
-                ValueRepository.ReadData(query);
+                var query = string.Format("INSERT INTO device(id, room, status) VALUES ('{0}', '{1}', '{2}')", device.id, device.room, device.status); //SQL query language
+                DeviceRepository.ReadData(query);
 
             }
             catch (Exception err)
@@ -46,27 +46,28 @@ namespace Ultrasonic.Controllers
         /// Get all user from database
         /// </summary>
         [HttpGet]  // Define method saveuser to do POST
-        [Route("api/get/value")]
-        public HttpResponseMessage Getvalue()
+        [Route("api/get/device")]
+        public HttpResponseMessage Getdevice()
         {
             //bool result = false;            
             string errMessage = "";
-            ListValue list_value = new ListValue();
-            string SQL = "SELECT * from value where distance=10";
-            DataSet ds = ValueRepository.ReadData(SQL);
-            list_value.number = ds.Tables[0].Rows.Count;
+            ListDevice list_device = new ListDevice();
+            string SQL = "SELECT id,room,status from device";
+            DataSet ds = DeviceRepository.ReadData(SQL);
+            //list_device.number = ds.Tables[0].Rows.Count;
             if (ds.Tables[0].Rows.Count > 0)
             {
                 //list_user.number = ds.Tables[0].Rows.Count;
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
-                    Value item = new Value()
+                    Device item = new Device()
                     {
                         id = dr["id"].ToString(),
-                        distance = dr["distance"].ToString(),
+                        room = dr["room"].ToString(),
+                        status = dr["status"].ToString(),
                     };
 
-                    list_value.values.Add(item);
+                    list_device.devices.Add(item);
                 }
             }
             if (errMessage != "")
@@ -74,23 +75,23 @@ namespace Ultrasonic.Controllers
             else
                 //Console.WriteLine(HttpStatusCode.OK);
                 //return Request.CreateResponse(HttpStatusCode.OK, result); 
-                return Request.CreateResponse(HttpStatusCode.OK, list_value);
+                return Request.CreateResponse(HttpStatusCode.OK, list_device);
         }
 
         /// <summary>  
         /// Delete user from database by user_id 
         /// </summary>
         [HttpPost]
-        [Route("api/delete/value")]
-        public HttpResponseMessage Deletevalue(Value value)
+        [Route("api/delete/device")]
+        public HttpResponseMessage Deletevalue(Device device)
         {
             string text = "";
             string errMessage = "";
 
             try
             {
-                string query = string.Format("DELETE from value WHERE id = '{0}'", value.id);
-                ValueRepository.ReadData(query);
+                string query = string.Format("DELETE from device WHERE id = '{0}'", device.id);
+                DeviceRepository.ReadData(query);
             }
             //list_user.number = ds.Tables[0].Rows.Count;
             catch (Exception err)
@@ -110,8 +111,8 @@ namespace Ultrasonic.Controllers
         /// Edit user in database by choose user_id to change user_name
         /// </summary>
         [HttpPost]
-        [Route("api/update/value")]
-        public HttpResponseMessage Updatevalue(Value value)
+        [Route("api/update/device")]
+        public HttpResponseMessage Updatevalue(Device device)
         {
             string text = "";
             string errMessage = "";
@@ -119,12 +120,44 @@ namespace Ultrasonic.Controllers
 
             try
             {
-                string query = string.Format("UPDATE value set distance = '{0}' WHERE id = '{1}' ", value.distance, value.id);
+                string query = string.Format("UPDATE device set status = '{0}' WHERE id = '{1}' ", device.status, device.id);
                 //query = query.Replace("@user_id", user.user_id);
                 //query = query.Replace("@user_n", user.user_name);  
-                ValueRepository.ReadData(query);
+                DeviceRepository.ReadData(query);
             }
             //list_user.number = ds.Tables[0].Rows.Count;
+            catch (Exception err)
+            {
+                errMessage = err.Message;
+            }
+
+
+            if (errMessage != "")
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, errMessage);
+
+            else
+            {
+                text = "Update finish!";
+                return Request.CreateResponse(HttpStatusCode.OK, text);
+            }
+        }
+
+        [HttpPost]
+        [Route("home/api/control/device/{id}/{status}")]
+        public HttpResponseMessage ControlDevice(int id, int status, Device device)
+        {
+            string text = "";
+            string errMessage = "";
+            //Device device = new Device();
+
+            try
+            {
+                string query = string.Format("UPDATE device set status = '{0}' WHERE id = '{1}' ", status, id);
+                //query = query.Replace("@device_id", device.device_id);
+                //query = query.Replace("@device_n", device.device_name);  
+                DeviceRepository.ReadData(query);
+            }
+            //list_device.number = ds.Tables[0].Rows.Count;
             catch (Exception err)
             {
                 errMessage = err.Message;
