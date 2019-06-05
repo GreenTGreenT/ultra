@@ -25,9 +25,9 @@ namespace device.Controllers
             string errMessage = "";
             try
             {
-                var query = string.Format("INSERT INTO device(id, room, status) VALUES ('{0}', '{1}', '{2}')", device.id, device.room, device.status); //SQL query language
+                var query = string.Format("INSERT INTO device(id, room, status) VALUES ('{0}', '{1}', '{2}')", 
+                    device.id, device.room, device.status); //SQL query language
                 DeviceRepository.ReadData(query);
-
             }
             catch (Exception err)
             {
@@ -110,40 +110,40 @@ namespace device.Controllers
         /// <summary>  
         /// Edit user in database by choose user_id to change user_name
         /// </summary>
+        //[HttpPost]
+        //[Route("api/update/device")]
+        //public HttpResponseMessage Updatevalue(Device device)
+        //{
+        //    string text = "";
+        //    string errMessage = "";
+
+
+        //    try
+        //    {
+        //        string query = string.Format("UPDATE device set status = '{0}' WHERE id = '{1}' ", device.status, device.id);
+        //        //query = query.Replace("@user_id", user.user_id);
+        //        //query = query.Replace("@user_n", user.user_name);  
+        //        DeviceRepository.ReadData(query);
+        //    }
+        //    //list_user.number = ds.Tables[0].Rows.Count;
+        //    catch (Exception err)
+        //    {
+        //        errMessage = err.Message;
+        //    }
+
+
+        //    if (errMessage != "")
+        //        return Request.CreateResponse(HttpStatusCode.InternalServerError, errMessage);
+
+        //    else
+        //    {
+        //        text = "Update finish!";
+        //        return Request.CreateResponse(HttpStatusCode.OK, text);
+        //    }
+        //}
+
         [HttpPost]
-        [Route("api/update/device")]
-        public HttpResponseMessage Updatevalue(Device device)
-        {
-            string text = "";
-            string errMessage = "";
-
-
-            try
-            {
-                string query = string.Format("UPDATE device set status = '{0}' WHERE id = '{1}' ", device.status, device.id);
-                //query = query.Replace("@user_id", user.user_id);
-                //query = query.Replace("@user_n", user.user_name);  
-                DeviceRepository.ReadData(query);
-            }
-            //list_user.number = ds.Tables[0].Rows.Count;
-            catch (Exception err)
-            {
-                errMessage = err.Message;
-            }
-
-
-            if (errMessage != "")
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, errMessage);
-
-            else
-            {
-                text = "Update finish!";
-                return Request.CreateResponse(HttpStatusCode.OK, text);
-            }
-        }
-
-        [HttpPost]
-        [Route("home/api/control/device/{id}/{status}")]
+        [Route("api/control/device/{id}/{status}")]
         public HttpResponseMessage ControlDevice(int id, int status, Device device)
         {
             string text = "";
